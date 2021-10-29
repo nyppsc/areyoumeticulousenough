@@ -491,7 +491,10 @@ You actually regretted the decision as you saved money for the sake of the famil
 !End
 Congrats! You have made it through the month. But have you considered the relationship with your family members, friends amd also your own mental health? 
 Let’s see your progress!
- 
+
+
+<<resetPS>>
+[[Retry|Welcome]]
 :: Unhappy
 Your mental health has plummeted and you feel that you have hit rock bottom. 
  
