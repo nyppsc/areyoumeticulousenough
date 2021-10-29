@@ -524,7 +524,4 @@ Your friends are able to understand your situation. No hard feelings from you bu
 Oops, You overspent!
  
 <<resetPS>>
-[Retry|Retry]]
- 
-:: Retry
-<<resetPS>>
+[[Retry|Welcome]]
