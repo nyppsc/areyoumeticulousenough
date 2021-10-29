@@ -1,0 +1,529 @@
+:: StoryTitle
+Are You Meticulous Enough?
+
+
+:: StoryData
+{
+	"ifid": "CF7600F9-7B32-4589-9E72-2EBC77BE0B4D",
+	"format": "SugarCube",
+	"format-version": "2.34.1",
+	"start": "Welcome",
+	"tag-colors": {
+		"Start-Game": "blue"
+	},
+    "options": [ "debug" ],
+	"zoom": 1
+}
+:: Story Stylesheet [stylesheet]
+
+
+:: Story JavaScript [script]
+(function () {
+    // Simple player stats
+    
+    'use strict';
+ 
+    State.setVar("$playerStats", {
+        "money": 200,
+        "ybRelation": 75,
+        "frRelation": 75,
+        "happiness": 75
+    })
+     
+    const days = {"1":{"money":15,"sp":{"happiness":-15,"ybRelation":20},"dsp":{"happiness":15,"ybRelation":-20}},"4":{"money":30,"sp":{"happiness":20,"ybRelation":30},"dsp":{"happiness":-15,"ybRelation":-20}},"7":{"money":40,"sp":{"happiness":15},"dsp":{"happiness":-15}},"8":{"money":30,"sp":{"happiness":10,"ybRelation":15},"dsp":{"happiness":-15,"ybRelation":10}},"12":{"money":40,"sp":{"happiness":10,"ybRelation":10},"dsp":{"happiness":5,"ybRelation":5}},"15":{"money":10,"sp":{"happiness":-10,"ybRelation":20},"dsp":{"happiness":15,"ybRelation":-25}},"16":{"money":10,"sp":{"happiness":5,"ybRelation":15},"dsp":{"happiness":-5,"ybRelation":-15}},"19":{"money":40,"sp":{"happiness":15,"ybRelation":10},"dsp":{"happiness":-25,"ybRelation":-15}},"22":{"money":11,"sp":{"happiness":15},"dsp":{"happiness":-15}},"24":{"money":10,"sp":{"happiness":5,"ybRelation":25},"dsp":{"happiness":-5,"ybRelation":-10}},"29":{"money":15,"sp":{"happiness":15,"ybRelation":15},"dsp":{"happiness":-25,"ybRelation":-15}}};
+
+    function createStats(output){
+            new Wikifier(output, `\nYou have $${State.getVar("$playerStats").money} left.
+                                Your happiness: ${State.getVar("$playerStats").happiness}% 
+                                Younger Brother relationship: ${State.getVar("$playerStats").ybRelation}%
+                                Close Friend relationship: ${State.getVar("$playerStats").frRelation}%`)
+            }
+
+    Macro.add('cost', {
+        "handler": function (){
+            if (this.args.length !== 1){
+                return this.error(`Incorrect number of arguments: Requires 1, Given ${this.args.length}`);
+            }
+            if (!Number.isInteger(this.args[0])){
+                return this.error(`Incorrect syntax: Expecting "dayValue", Given ${this.args[0]}`)
+            }
+            let day = this.args[0].toString()
+            if (days.hasOwnProperty(day)){
+                new Wikifier(this.output, `$${days[day].money}`)
+            } else {
+                return this.error(`Cannot find ${day} in days.`)
+            }
+        }
+    
+    })
+
+
+    Macro.add('changePlayerStats', {
+        "handler": function (){
+            if (!Number.isInteger(this.args[0])){
+                return this.error(`Incorrect syntax: Expecting "dayValue", Given ${this.args[0]}`)
+            }
+            if (["sp", "dsp"].indexOf(this.args[1]) === false){
+                return this.error(`Incorrect syntax: Expecting "sp / dsp", Given ${this.args[1]}`)
+            }
+
+            let spp = this.args[1].toString()
+            let day = this.args[0].toString()
+            let currPlayerStats = State.getVar("$playerStats")
+            let currDay = {"money": days[day].money}
+            currDay = {...currDay, ...days[day][this.args[1]]}
+            for (const attr in currDay) {
+                if (Object.hasOwnProperty.call(currDay, attr)) {
+                    const value = currDay[attr];
+                    if (currPlayerStats.hasOwnProperty(attr)){
+                        if (attr === 'money'){
+                            if ((spp === 'sp') || (typeof this.args[2] === 'y')){
+                                currPlayerStats[attr] -= value
+                            }
+                        } else {
+                            currPlayerStats[attr] += value
+                            if (currPlayerStats[attr] > 100){
+                                currPlayerStats[attr] = 100
+                            }
+                        }
+                    } else {
+                        this.error(`Cannot find property ${attr}`)
+                    }
+                }
+            }
+            console.log("Money ", currPlayerStats.money)
+            if (currPlayerStats.money < 0){
+                console.log("Moneys ", currPlayerStats.money)
+                new Wikifier(this.output, "<<goto Overspent>>")
+            }
+        }
+    })
+
+    Macro.add('playerStats', {
+            "handler": function () {
+                createStats(this.output)
+            }
+        }
+    )
+
+    Macro.add('resetPS', {
+        "handler": function () {
+                State.setVar("$playerStats", {
+                    "money": 200,
+                    "ybRelation": 75,
+                    "frRelation": 75,
+                    "happiness": 75
+                })
+            }
+        }
+    )
+}()
+);
+
+
+:: Welcome [Start-Game] {"position":"300,300","size":"100,100"}
+!Are you METICULOUS enough?
+ 
+Welcome to "Are You METICULOUS Enough?"
+ 
+Game Rules
+# Try not to overspend
+ 
+ 
+[[Start Game|Introduction]]
+ 
+:: Money Cost
+It will cost you <<cost $day>>.
+<<playerStats>>
+ 
+:: Introduction {"position":"501,299","size":"100,100"}
+!Introduction
+ 
+You are the elder sibling from a low income family. You have a younger brother and both of you are staying with your parents. With a monthly income of $1,900 dollars, excluding the daily necessities expenses, the family is left with $770. You are tasked by your parents to handle distributing the pocket money of $200 for your brother and yourself for a month. Use it wisely.
+ 
+[[START Day 1|Day 1]]
+ 
+:: Day 1 {"position":"699,302","size":"100,100"}
+!Day 1 - Your younger brother's pocket money
+ 
+Your younger brother has requested pocket money. You know that he packs food from home everyday and does not need to spend money on food in school.
+<<set $day = 1>>
+<<include "Money Cost">>
+ 
+[[Give him pocket money|D1 Give Money]]
+[[Keep money to yourself|D1 Keep Money]]
+ 
+ 
+:: D1 Give Money {"position":"900,200","size":"100,100"}
+!Day 1 - You gave money to your brother
+ 
+You gave your brother <<cost $day>> because you felt bad for him as he rarely buys food from school.
+ 
+Your younger brother gave you the largest smile he could give and seemed genuinely happy you gave him pocket money. 
+ 
+<<changePlayerStats $day 'sp'>>
+ 
+[[3 days later...|Day 4]]
+ 
+ 
+:: D1 Keep Money {"position":"900,400","size":"100,100"}
+!Day 1 - You kept the money for yourself
+ 
+You kept the money to yourself for your own spending because you think your brother is acting up.
+ 
+Your younger brother felt that you were being selfish and unfair. He decided to ignore you for the rest of the day.
+ 
+<<changePlayerStats $day 'dsp'>>
+ 
+[[3 days later...|Day 4]]
+ 
+ 
+:: Day 4 {"position":"1100,300","size":"100,100"}
+!Day 4 - Your closes friend's birthday
+It is your friend's birthday and you want to share the cost to buy a pair of branded shoes as a birthday for him. You think it is a good opportunity for you to be closer with him.
+<<set $day = 4>>
+<<include "Money Cost">>
+ 
+[[You paid for your share|D4 Paid]]
+[[You did not care|D4 Unpaid]]
+ 
+ 
+:: D4 Paid {"position":"1300,200","size":"100,100"}
+!Day 4 - You paid for a portion of the shoe
+ 
+As you didn’t want to feel left out from your group of friends, you chipped in spending money to buy the birthday gift.
+ 
+Your friend that received the birthday gift felt happy that you put in the effort to buy it for him. He felt touched by your thoughtfulness. 
+ 
+<<changePlayerStats $day 'sp'>>
+ 
+[[3 Days Later...|Day 7]]
+ 
+ 
+:: D4 Unpaid {"position":"1300,400","size":"100,100"}
+!Day 4 - You did not pay for the portion of the shoe
+ 
+You didn’t care about being seen as a “cheapskate” and came up with an excuse to avoid spending money.
+ 
+Your friends had a negative image of you because of the lack of effort due to not chipping in for the birthday gift. They felt that you just simply don’t care. 
+ 
+<<changePlayerStats $day 'dsp'>>
+ 
+[[3 Days Later...|Day 7]]
+ 
+ 
+:: Day 7 {"position":"1500,300","size":"100,100"}
+!Day 7 - Buying an electronic tablet
+ 
+You finally managed to afford a tablet by using another <<cost $day>> after saving for a year. Everyone in your social circle has it and you feel this pressure to buy. 
+<<set $day = 7>>
+<<include "Money Cost">>
+ 
+[[You bought the tablet|D7 Bought tablet]]
+[[You did not buy the tablet|D7 Bought nothing]]
+ 
+ 
+:: D7 Bought tablet {"position":"1700,200","size":"100,100"}
+!Day 7 - You bought an electronic tablet
+ 
+You have convinced yourself that you NEED an electronic tablet because it will be beneficial for your academics and can also help you to fit in with your friends.
+ 
+Your classmates and friends all were fascinated by your new tablet as it was the latest edition. They had the impression that you were well-off financially. 
+ 
+<<changePlayerStats $day 'sp'>>
+ 
+[[The next day|Day 8]]
+ 
+ 
+:: D7 Bought nothing {"position":"1700,400","size":"100,100"}
+!Day 7 - You did not buy the electronic tablet
+ 
+You stick with using pen and paper to write down notes just like you have always done. It’s the same to you anyways.
+ 
+Your friends had the perception that you are too traditional and stuck stuck in olden days. You feel left out when studying with them. 
+ 
+<<changePlayerStats $day 'dsp'>>
+ 
+[[The next day|Day 8]]
+ 
+ 
+:: Day 8 {"position":"1900,300","size":"100,100"}
+!Day 8 - Buying a new bag for younger brother
+ 
+Your younger brother wants to change to a new backpack as the one he is using is totally worn out. He wanted to buy the bag from the local bookstore.<<set $day = 8>>
+<<set $day = 8>>
+<<include "Money Cost">>
+ 
+[[You bought the bag for your brother|D8 Bought]]
+[[You decide not to buy the bag for your brother|D8 Didnt Buy]]
+ 
+ 
+:: D8 Bought {"position":"2100,200","size":"100,100"}
+!Day 8 - Bought the bag
+ 
+Your younger brother was happy with his new bag.
+<<if $d8Con === true>>You felt bad for not initially not letting your brother buy the bag.<<changePlayerStats $day 'dsp' 'y'>><</if>><<changePlayerStats $day 'sp'>>
+[[4 days later...|Day 12]]
+ 
+ 
+:: D8 Didnt Buy {"position":"2100,400","size":"100,100"}
+!Day 8
+ 
+You ''NEED'' to spend the money for your younger brother because your parents told you that it's important for him to get a new one as it is no longer usable. 
+ 
+Your brother felt happy that he had gotten a new bag and excited to come to school. 
+ 
+<<set $d8Con = true>>
+[[You reluctantly agreed...|D8 Bought]]
+ 
+ 
+:: Day 12 {"position":"2275,300","size":"100,100"}
+!Day 12 - Younger brother's Birthday
+ 
+It is your younger brother's birthday, you plan to prepare a meal and buy the board game he likes.
+Do you continue with your plan or save your money?
+<<set $day = 12>>
+<<include "Money Cost">>
+ 
+[[Continue with the plan|D12 Celebrate Birthday]]
+[[Scrap the plan|D12 Scrap Plan]]
+ 
+ 
+:: D12 Celebrate Birthday {"position":"2500,400","size":"100,100"}
+!Day 12 - Celebrate his birthday
+ 
+The birthday dinner was a success, it was meaningful for your brother as you do not usually spend money on him.
+ 
+Your younger brother was touched by your kind gesture and it was something that she appreciated greatly. He was even moved to tears. 
+ 
+ 
+<<changePlayerStats $day 'sp'>>
+ 
+[[3 days later...|Day 15]]
+ 
+ 
+:: D12 Scrap Plan {"position":"2500,200","size":"100,100"}
+!Day 12 - Scrap the plan
+ 
+You decide to scrap the plan and simply wish him a happy birthday and hope he felt your sincerity from you.
+ 
+Your brother was disappointed in you because he expected at least a gift for his birthday. 
+ 
+<<changePlayerStats $day 'dsp'>>
+ 
+[[3 days later...|Day 15]]
+ 
+ 
+:: Day 15 {"position":"2701,299","size":"100,100"}
+!Day 15 - Brand new card game
+ 
+There is a brand new card game in town: "AnimalCollect", your younger brother is pestering you to buy it for him.
+<<set $day = 15>>
+<<include "Money Cost">>
+ 
+[[Give in to your brother|D15 - Give In]]
+[[Ignore him till he gets tired|D15 - Ignore]]
+ 
+:: D15 - Give In
+!Day 15 - You gave in to your brother
+You gave in to his demands because he keeps pestering you for it and you just wanted it to stop.
+ 
+Your brother hugged you and said that you are the best brother in the world. He also says that he will share it with you when he buys it. 
+ 
+<<changePlayerStats $day 'sp'>>
+ 
+[[The next day... |Day 16]]
+:: D15 - Ignore
+!Day 15 - You ignored your younger brother
+You ignore him until he gets tired and gives up, and it has worsened your relationship with him. Your brother said that he hates you and you are the worst person he has ever seen.
+ 
+ 
+<<changePlayerStats $day 'dsp'>>
+ 
+[[The next day... |Day 16]]
+ 
+:: Day 16
+!Day 16 - Going back to school
+You finally went back to school for lessons after a long time doing HBL and your friends invited you to grab lunch (Coffee: $4 and Sandwich: $6) after school. You didn’t bring any packed food because you already planned to eat together with your friends. You left your brother to eat at home by himself.
+<<set $day = 16>>
+<<include "Money Cost">>
+ 
+[[You decide to save your money and not eat|D16 - Not eat]]
+ 
+:: D16 - Not eat
+!Day 16 - You need to eat, as you did not pack food
+You ''NEED'' to spend money for food at school because you haven’t eaten anything the whole day and you were starving. 
+ 
+You feel happy that you are able to eat at school with your friends because you rarely do so. 
+ 
+<<changePlayerStats $day "sp">>
+ 
+[[3 days later...|Day 19]]
+ 
+:: D16 - Eat
+!Day 16 - You ate and have fun with your friends
+You ate with your friends and had fun talking to your classmates.
+ 
+<<changePlayerStats $day "sp">>
+ 
+[[3 days later...|Day 19]]
+ 
+:: Day 19
+!Day 19
+Got laughed at by classmates for wearing the same shirt over and over again. You are thinking of buying some new clothes from a thrift shop.
+ 
+<<set $day = 19>>
+<<include "Money Cost">>
+[[Determined to buy new clothes to impress classmates|D19 - Determined to buy new clothes to impress classmates]]
+[[Continue to keep wearing the same old clothes|D19 - Continue to keep wearing the same old clothes]]
+ 
+:: D19 - Determined to buy new clothes to impress classmates
+!Day 19 - Determined to buy new clothes to impress classmates
+You felt embarrassed that you were mocked by your classmates, that you always wear the same shirt and are determined to find new clothes to stop the teasing.
+ 
+You spent the money and wore them on the following days, your friends complimented you for having good taste. 
+ 
+<<changePlayerStats $day "sp">>
+ 
+[[3 days later...|Day 22]]
+ 
+:: D19 - Continue to keep wearing the same old clothes
+!Day 19 - Continue to keep wearing the same old clothes
+You just continue with wearing the same shirt and don’t feel bothered with all the teasing because you don’t find it important to buy new ones when it looks perfectly fine. 
+ 
+You still feel slightly embarrassed and unhappy by all their jokes. You keep it by yourself as you do not want to bother anyone with the negative feelings you are experiencing.  
+ 
+<<changePlayerStats $day "dsp">>
+ 
+[[3 days later...|Day 22]]
+ 
+:: Day 22
+!Day 22
+You notice your father is experiencing some back pain due to his job as a blue collar worker. He hurt his back from carrying heavy objects from working long hours. You feel sympathetic when you see that and want to give him a medical patch.
+ 
+<<set $day = 22>>
+<<include "Money Cost">>
+ 
+[[Show appreciation to your father’s hard work|D22 - Show appreciation to your father’s hard work]]
+[[Feign ignorance to your father’s condition|D22 - Feign ignorance to your father’s condition]]
+ 
+:: D22 - Show appreciation to your father’s hard work
+!Day 22 - Show appreciation to your father’s hard work
+You feel like you want to do something nice for your father to show appreciation for his hard work provide for your family
+ 
+Your father thanked you for being filial and promised that he will work harder to give you a better life. 
+ 
+<<changePlayerStats $day "sp">>
+ 
+[[2 days later...|Day 24]]
+ 
+:: D22 - Feign ignorance to your father’s condition
+!Day 22 - Feign ignorance to your father’s condition
+You turned a blind eye towards your father’s condition and that hope he will heal with time. But you still feel guilty for not doing anything.
+ 
+Two days later, Your father took medical leave due to unbearable pain over the back. He lies on the bed for the whole day. 
+ 
+<<changePlayerStats $day "dsp">>
+ 
+[[2 days later...|Day 24]]
+ 
+:: Day 24
+!Day 24
+Younger brother requires a calculator because he broke it. You know that you should spend money on your younger brother to buy a calculator because he has a Math test soon and it is very urgent for him to get one. You don’t have a calculator that you can borrow for him to use.
+ 
+ 
+<<set $day = 24>>
+<<include "Money Cost">>
+ 
+[[You bought the calculator for him|D24 - You bought the calculator for him]]
+[[You decided not to buy the calculator for him|D24 - You decided not to buy the calculator for him]]
+ 
+:: D24 - You bought the calculator for him
+!Day 24 - You bought the calculator for him
+You know that you should spend money on your younger brother to buy a calculator because he has a Math test soon and it is very urgent for him to get one. You don’t have a calculator that you can borrow for him to use.
+ 
+<<changePlayerStats $day "sp">>
+ 
+[[5 days later...|Day 29]]
+ 
+:: D24 - You decided not to buy the calculator for him
+!Day 24 - You decided not to buy the calculator for him
+ 
+Your mother heard about the broken calculator and reprimanded you for your selfishness. You were forced to buy a calculator for him the next day from the school bookshop. At the same time, your brother was hurt from your original decision and became bitter towards you. 
+ 
+<<changePlayerStats $day "dsp" "y">>
+ 
+[[5 days later...|Day 29]]
+ 
+ 
+:: Day 29
+!Day 29
+Watching movies with friends, they asked you to bring snacks along. You and your friends have been excited and hyping it to see it for the longest time.
+ 
+<<set $day = 29>>
+<<include "Money Cost">>
+ 
+[[Destress from school by hanging out with friends|D29 - Destress from school by hanging out with friends]]
+[[Excuse yourself from joining the movie outing|D29 - Excuse yourself from joining the movie outing]]
+ 
+:: D29 - Destress from school by hanging out with friends
+!Day 29 - Destress from school by hanging out with friends
+You find this as an opportunity destress from huge workload you have from school by spending time with your friends
+ 
+You had a good time with your friends and they shared gossips and personal stories with you and you feel like you got closer with them. 
+ 
+<<changePlayerStats $day "sp">>
+ 
+[[End|End]]
+ 
+:: D29 - Excuse yourself from joining the movie outing
+!Day 29 - Excuse yourself from joining the movie outing
+You excused yourself from tagging along and told your friends to have fun among themselves because you don’t want to hold them back from watching the movie since they were hyped to watch it. 
+ 
+You actually regretted the decision as you saved money for the sake of the family. You felt left out and sad that you were not able to hang out with your friends. 
+ 
+<<changePlayerStats $day "dsp">>
+ 
+[[End|End]]
+ 
+:: End
+!End
+Congrats! You have made it through the month. But have you considered the relationship with your family members, friends amd also your own mental health? 
+Let’s see your progress!
+ 
+:: Unhappy
+Your mental health has plummeted and you feel that you have hit rock bottom. 
+ 
+:: Strained Brother
+Sadly, due to money issues, you have drifted apart from your younger brother and the relationship is strained. 
+ 
+:: Strained Friend
+Your friends perceived you as not putting in enough effort in maintaining the relationship. 
+ 
+:: Happy
+You are generally happy throughout the whole month. You managed to live through the way you want it to be.  
+ 
+:: Happy Friend
+Your friend appreciates and values you as a super close friend. The relationship has become deeper and it is obvious there is an unbreakable bond and trust. 
+ 
+:: Happy Brother
+You have become significantly close with your brother. Your brother is more open to you.
+ 
+:: Neutral
+You did not experience any strong emotion during the month. Sacrifices have been made due to your circumstances but you are fine with it.  
+ 
+:: Neutral Brother
+Your brother is able to understand all decisions made by you. He was unable to get what he wanted but he had no hard feelings towards you. 
+ 
+:: Neutral Friend
+Your friends are able to understand your situation. No hard feelings from you but there is no improvement in the relationship either. 
+ 
+:: Overspent
+!You Overspent!
+Oops, You overspent!
+ 
+<<resetPS>>
+[Retry|Retry]]
+ 
+:: Retry
+<<resetPS>>
