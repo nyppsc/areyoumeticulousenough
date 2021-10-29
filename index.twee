@@ -348,6 +348,7 @@ You finally went back to school for lessons after a long time doing HBL and your
 <<set $day = 16>>
 <<include "Money Cost">>
  
+[[You decide eat with your friends|D16 - Eat]]
 [[You decide to save your money and not eat|D16 - Not eat]]
  
 :: D16 - Not eat
