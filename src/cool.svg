@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="46.225933mm"
+   height="46.225933mm"
+   viewBox="0 0 46.225933 46.225933"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="cool.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1"
+     inkscape:cx="131"
+     inkscape:cy="-195.5"
+     inkscape:window-width="1920"
+     inkscape:window-height="1013"
+     inkscape:window-x="1911"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     inkscape:snap-bbox="true"
+     inkscape:snap-intersection-paths="true"
+     inkscape:snap-midpoints="true"
+     inkscape:snap-bbox-edge-midpoints="false"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-smooth-nodes="true"
+     inkscape:snap-page="true" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-104.85494,-84.401804)">
+    <circle
+       style="fill:#ffcc00;stroke:#1a1a1a;stroke-width:2;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path846"
+       cx="127.96791"
+       cy="107.51477"
+       r="22.112967" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
+       sodipodi:type="arc"
+       sodipodi:cx="128.02609"
+       sodipodi:cy="110.50997"
+       sodipodi:rx="10.439867"
+       sodipodi:ry="10.019302"
+       sodipodi:start="0.52359878"
+       sodipodi:end="2.6179939"
+       sodipodi:arc-type="arc"
+       d="m 137.06728,115.51962 a 10.439867,10.019302 0 0 1 -9.04119,5.00965 10.439867,10.019302 0 0 1 -9.04119,-5.00965"
+       id="path3515"
+       sodipodi:open="true" />
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect11868"
+       width="15.240154"
+       height="12.10239"
+       x="111.12187"
+       y="94.409828"
+       ry="3.1370656" />
+    <path
+       id="rect12095"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:9.40951;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 20.109375 37.826172 A 83.576566 83.576566 0 0 0 8.703125 59.259766 L 36.283203 59.259766 L 36.283203 37.826172 L 20.109375 37.826172 z "
+       transform="matrix(0.26458333,0,0,0.26458333,104.85494,84.401804)" />
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect12276"
+       width="15.240154"
+       height="12.10239"
+       x="-143.9812"
+       y="94.600037"
+       ry="3.1370656"
+       transform="scale(-1,1)" />
+    <path
+       id="rect12278"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.61513;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 141.33382,94.600037 v 5.670973 h 8.23929 a 22.112966,22.112966 0 0 0 -2.94453,-5.670973 z" />
+    <rect
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:2;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect12436"
+       width="5.6360459"
+       height="3.5780709"
+       x="124.58593"
+       y="96.154915"
+       ry="1.7890354" />
+    <path
+       id="path21090"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:9.40951;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 20.109375 37.826172 A 83.576566 83.576566 0 0 0 8.703125 59.259766 L 36.283203 59.259766 L 36.283203 37.826172 L 20.109375 37.826172 z "
+       transform="matrix(0.26458333,0,0,0.26458333,104.85494,84.401804)" />
+  </g>
+</svg>

@@ -1,0 +1,14 @@
+sugarcube-2:
+  macros:
+    resetPS:
+      name: resetPS
+    changePlayerStats:
+      name: changePlayerStats
+    cost:
+      name: cost
+    playerStats:
+      name: playerStats
+    getFace:
+      name: getFace
+    playerEnd:
+      name: playerEnd
