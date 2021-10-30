@@ -1,0 +1,14 @@
+:: StoryTitle
+Are You Meticulous Enough?
+
+:: StoryData
+{
+	"ifid": "CF7600F9-7B32-4589-9E72-2EBC77BE0B4D",
+	"format": "SugarCube",
+	"format-version": "2.34.1",
+	"start": "Welcome",
+	"tag-colors": {
+		"Start-Game": "blue"
+	},
+	"zoom": 1
+}

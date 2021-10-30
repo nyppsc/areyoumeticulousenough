@@ -1,0 +1,63 @@
+:: Story Stylesheet [stylesheet]
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+    background-color: #B6D7A8;
+    color: #000000;
+    font-family:'Press Start 2P'
+}
+
+#logo a{
+    width: 100%;
+    height: 100%;
+    color: none;
+    padding: 0;
+    display: block;
+    background-color:transparent;
+}
+
+#logo img{
+    width: 100%;
+    height: 100%;
+}
+
+.passage a{  	
+    background-color: #6AA84F;
+  	color: white;
+  	padding: 1em 0;
+  	text-align: center;
+  	text-decoration: none;
+ 	display: block;
+  	width: 100%;
+    border-radius: 0.5em
+}
+.hideui, #ui-bar {
+	display: none;
+}
+#story {
+    margin-left: 0.5em;
+}
+@media screen and (max-width:1136px) {
+  #ui-bar.stowed~#story {
+  	margin-left:0.5em;
+}
+table, tr, td {
+    border: 0.2em solid #000000;
+}
+td:nth-child(even) > img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+#logo > img{
+    width: 100%;
+    height: 100%;
+    border: none;
+    color: none;
+}
+#logo > a.link-internals{
+    width: 100%;
+    height: 100%;
+    border: none;
+    color: none;
+}
