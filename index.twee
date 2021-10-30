@@ -42,7 +42,16 @@ a.link-internal {
 @media screen and (max-width:1136px) {
   #ui-bar.stowed~#story {
   	margin-left:0.5em;
- }
+}
+table, tr, td {
+    border: 0.2em solid #000000;
+}
+td:nth-child(even) > img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 :: Story JavaScript [script]
 (function () {
 
