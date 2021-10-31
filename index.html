@@ -165,12 +165,12 @@ td:nth-child(even) > img{
  
     State.setVar("$playerStats", {
         "money": 200,
-        "ybRelation": 75,
-        "frRelation": 75,
-        "happiness": 75
+        "ybRelation": 67,
+        "frRelation": 67,
+        "happiness": 67
     })
      
-    const days = {"1":{"money":15,"sp":{"happiness":-15,"ybRelation":20},"dsp":{"happiness":15,"ybRelation":-20}},"4":{"money":30,"sp":{"happiness":20,"frRelation":30},"dsp":{"happiness":-15,"frRelation":-20}},"7":{"money":40,"sp":{"happiness":15},"dsp":{"happiness":-15}},"8":{"money":30,"sp":{"happiness":10,"ybRelation":15},"dsp":{"happiness":-15,"ybRelation":10}},"12":{"money":40,"sp":{"happiness":10,"ybRelation":10},"dsp":{"happiness":5,"ybRelation":5}},"15":{"money":10,"sp":{"happiness":-10,"ybRelation":20},"dsp":{"happiness":15,"ybRelation":-25}},"16":{"money":10,"sp":{"happiness":5,"ybRelation":15},"dsp":{"happiness":-5,"ybRelation":-15}},"19":{"money":40,"sp":{"happiness":15,"frRelation":10},"dsp":{"happiness":-25,"frRelation":-15}},"22":{"money":11,"sp":{"happiness":15},"dsp":{"happiness":-15}},"24":{"money":10,"sp":{"happiness":5,"ybRelation":25},"dsp":{"happiness":-5,"ybRelation":-10}},"29":{"money":15,"sp":{"happiness":15,"ybRelation":15},"dsp":{"happiness":-25,"frRelation":-15}}};
+    const days = {"1":{"money":15,"sp":{"happiness":-15,"ybRelation":20},"dsp":{"happiness":15,"ybRelation":-20}},"4":{"money":30,"sp":{"happiness":20,"frRelation":30},"dsp":{"happiness":-15,"frRelation":-20}},"7":{"money":40,"sp":{"happiness":15},"dsp":{"happiness":-15}},"8":{"money":30,"sp":{"happiness":5,"ybRelation":10},"dsp":{"happiness":-15,"ybRelation":-10}},"12":{"money":40,"sp":{"happiness":10,"ybRelation":10},"dsp":{"happiness":-10,"ybRelation":-10}},"15":{"money":10,"sp":{"happiness":-10,"ybRelation":20},"dsp":{"happiness":15,"ybRelation":-25}},"16":{"money":10,"sp":{"happiness":10,"frRelation":15},"dsp":{"happiness":-10,"frRelation":-15}},"19":{"money":40,"sp":{"happiness":15,"frRelation":10},"dsp":{"happiness":-25,"frRelation":-15}},"22":{"money":11,"sp":{"happiness":15},"dsp":{"happiness":-15}},"24":{"money":10,"sp":{"happiness":5,"ybRelation":25},"dsp":{"happiness":-5,"ybRelation":-10}},"29":{"money":15,"sp":{"happiness":15,"ybRelation":15},"dsp":{"happiness":-25,"frRelation":-15}}};
 
     function createStats(output) {
         new Wikifier(output, `\n<<include "CurrPlayerStats">>`)
@@ -183,10 +183,10 @@ td:nth-child(even) > img{
         } else {
             face = ['sad', 'neutral', 'cool']
         }
-        if (value <= 40){
+        if (value <= 33){
             face = face[0]
         }
-        else if (value <= 60){
+        else if (value <= 66){
             face = face[1]
         }
         else{
@@ -264,8 +264,8 @@ td:nth-child(even) > img{
                             }
                         } else {
                             currPlayerStats[attr] += value
-                            if (currPlayerStats[attr] > 100){
-                                currPlayerStats[attr] = 100
+                            if (currPlayerStats[attr] >= 100){
+                                currPlayerStats[attr] = 99
                             }
                         }
                     } else {
@@ -273,6 +273,7 @@ td:nth-child(even) > img{
                     }
                 }
             }
+            console.log("Day ",day,":",currPlayerStats);
             if (currPlayerStats.money < 0){
                 new Wikifier(this.output, "<<goto Overspent>>")
             }
@@ -316,12 +317,12 @@ td:nth-child(even) > img{
 }());</script><tw-tag name="Start-Game" color="blue"></tw-tag><tw-passagedata pid="1" name="PassageHeader" tags="" position="100,100" size="100,100">@@#logo; &lt;&lt;link [img[src/logo.svg][Restart]]&gt;&gt;&lt;&lt;replace &quot;#logo&quot;&gt;&gt;&lt;&lt;link [img[src/logo.svg]]&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;&lt;/replace&gt;&gt;&lt;&lt;/link&gt;&gt;@@</tw-passagedata><tw-passagedata pid="2" name="CurrPlayerStats" tags="" position="225,100" size="100,100">|Money &lt;img src=&quot;src/money.svg&quot; width=&quot;60em&quot; height=&quot;30em&quot;&gt;|$&lt;&lt;print $playerStats.money&gt;&gt;|
 |Happiness|&lt;&lt;getFace &quot;happiness&quot; $playerStats.happiness&gt;&gt;|
 |Younger Brother Relationship|&lt;&lt;getFace &quot;ybRelation&quot; $playerStats.ybRelation&gt;&gt;|
-|Close Friend Relationship|&lt;&lt;getFace &quot;ybRelation&quot; $playerStats.frRelation&gt;&gt;|</tw-passagedata><tw-passagedata pid="3" name="Welcome" tags="Start-Game" position="300,300" size="100,100">----
+|Close Friend Relationship|&lt;&lt;getFace &quot;frRelation&quot; $playerStats.frRelation&gt;&gt;|</tw-passagedata><tw-passagedata pid="3" name="Welcome" tags="Start-Game" position="300,300" size="100,100">----
 This is a game where you try to save money and not overspend in a month.
 Each day you will be able to make a decision whether to spend money on that day.
-Your goal in this game is to try not to overspend.
+Your goal in this game is to not overspend.
 
-If you ever need to restart or go fullscreen click or press on the logo.
+If you ever need to restart or go fullscreen click on the logo.
 Good Luck!
 
 &lt;&lt;link &quot;Go Fullscreen&quot;&gt;&gt;
@@ -407,16 +408,16 @@ Your friends had the perception that you are too traditional and stuck in olden 
  
 [[The next day|Day 8]]</tw-passagedata><tw-passagedata pid="15" name="Day 8" tags="" position="1900,300" size="100,100">!Day 8 - Buying a new bag for younger brother
  
-Your younger brother wants to change to a new backpack as the one he is using is totally worn out. He wanted to buy the bag from the local bookstore.&lt;&lt;set $day = 8&gt;&gt;
+Your younger brother wants to change to a new backpack as the one he is using is totally worn out. He wanted to buy the bag from the local bookstore.
+&lt;&lt;set $d8Con = false&gt;&gt;
 &lt;&lt;set $day = 8&gt;&gt;
 &lt;&lt;include &quot;Money Cost&quot;&gt;&gt;
  
 [[You bought the bag for your brother|D8 Bought]]
-
 [[You decide not to buy the bag for your brother|D8 Didnt Buy]]</tw-passagedata><tw-passagedata pid="16" name="D8 Bought" tags="" position="2100,200" size="100,100">!Day 8 - Bought the bag
  
 Your younger brother was happy with his new bag.
-&lt;&lt;if $d8Con === true&gt;&gt;You felt bad for not initially not letting your brother buy the bag.&lt;&lt;changePlayerStats $day &#39;dsp&#39; &#39;y&#39;&gt;&gt;&lt;&lt;/if&gt;&gt;&lt;&lt;changePlayerStats $day &#39;sp&#39;&gt;&gt;
+&lt;&lt;if $d8Con === true&gt;&gt;You felt bad for not initially not letting your brother buy the bag.&lt;&lt;/if&gt;&gt;&lt;&lt;changePlayerStats $day &#39;sp&#39;&gt;&gt;
 
 [[4 days later...|Day 12]]</tw-passagedata><tw-passagedata pid="17" name="D8 Didnt Buy" tags="" position="2100,400" size="100,100">!Day 8 - Did not to buy the bag
  
