@@ -165,12 +165,130 @@ td:nth-child(even) > img{
  
     State.setVar("$playerStats", {
         "money": 200,
-        "ybRelation": 75,
-        "frRelation": 75,
-        "happiness": 75
+        "ybRelation": 5,
+        "frRelation": 5,
+        "happiness": 5
     })
      
-    const days = {"1":{"money":15,"sp":{"happiness":-15,"ybRelation":20},"dsp":{"happiness":15,"ybRelation":-20}},"4":{"money":30,"sp":{"happiness":20,"frRelation":30},"dsp":{"happiness":-15,"frRelation":-20}},"7":{"money":40,"sp":{"happiness":15},"dsp":{"happiness":-15}},"8":{"money":30,"sp":{"happiness":10,"ybRelation":15},"dsp":{"happiness":-15,"ybRelation":10}},"12":{"money":40,"sp":{"happiness":10,"ybRelation":10},"dsp":{"happiness":5,"ybRelation":5}},"15":{"money":10,"sp":{"happiness":-10,"ybRelation":20},"dsp":{"happiness":15,"ybRelation":-25}},"16":{"money":10,"sp":{"happiness":5,"ybRelation":15},"dsp":{"happiness":-5,"ybRelation":-15}},"19":{"money":40,"sp":{"happiness":15,"frRelation":10},"dsp":{"happiness":-25,"frRelation":-15}},"22":{"money":11,"sp":{"happiness":15},"dsp":{"happiness":-15}},"24":{"money":10,"sp":{"happiness":5,"ybRelation":25},"dsp":{"happiness":-5,"ybRelation":-10}},"29":{"money":15,"sp":{"happiness":15,"ybRelation":15},"dsp":{"happiness":-25,"frRelation":-15}}};
+    const days = {
+    "1": {
+        "money": 15,
+        "sp": {
+            "happiness": -1,
+            "ybRelation": 2
+        },
+        "dsp": {
+            "happiness": 1,
+            "ybRelation": -2
+        }
+    },
+    "4": {
+        "money": 30,
+        "sp": {
+            "happiness": 2,
+            "frRelation": 3
+        },
+        "dsp": {
+            "happiness": -1,
+            "frRelation": -2
+        }
+    },
+    "7": {
+        "money": 40,
+        "sp": {
+            "happiness": 1
+        },
+        "dsp": {
+            "happiness": -1
+        }
+    },
+    "8": {
+        "money": 30,
+        "sp": {
+            "happiness": 1,
+            "ybRelation": 2
+        },
+        "dsp": {
+            "happiness": -2,
+            "ybRelation": -1
+        }
+    },
+    "12": {
+        "money": 40,
+        "sp": {
+            "happiness": 1,
+            "ybRelation": 1
+        },
+        "dsp": {
+            "happiness": -1,
+            "ybRelation": -1
+        }
+    },
+    "15": {
+        "money": 10,
+        "sp": {
+            "happiness": -1,
+            "ybRelation": 2
+        },
+        "dsp": {
+            "happiness": 1,
+            "ybRelation": -2
+        }
+    },
+    "16": {
+        "money": 10,
+        "sp": {
+            "happiness": 1,
+            "frRelation": 1
+        },
+        "dsp": {
+            "happiness": -1,
+            "frRelation": -1
+        }
+    },
+    "19": {
+        "money": 40,
+        "sp": {
+            "happiness": 1,
+            "frRelation": 1
+        },
+        "dsp": {
+            "happiness": -2,
+            "frRelation": -1
+        }
+    },
+    "22": {
+        "money": 11,
+        "sp": {
+            "happiness": 1
+        },
+        "dsp": {
+            "happiness": -1
+        }
+    },
+    "24": {
+        "money": 10,
+        "sp": {
+            "happiness": 1,
+            "ybRelation": 3
+        },
+        "dsp": {
+            "happiness": -1,
+            "ybRelation": -2
+        }
+    },
+    "29": {
+        "money": 15,
+        "sp": {
+            "happiness": 2,
+            "ybRelation": 2
+        },
+        "dsp": {
+            "happiness": -2,
+            "frRelation": -2
+        }
+    }
+    };
 
     function createStats(output) {
         new Wikifier(output, `\n<<include "CurrPlayerStats">>`)
@@ -183,10 +301,10 @@ td:nth-child(even) > img{
         } else {
             face = ['sad', 'neutral', 'cool']
         }
-        if (value <= 40){
+        if (value <= 3){
             face = face[0]
         }
-        else if (value <= 60){
+        else if (value <= 6){
             face = face[1]
         }
         else{
@@ -253,7 +371,7 @@ td:nth-child(even) > img{
             let day = this.args[0].toString()
             let currPlayerStats = State.getVar("$playerStats")
             let currDay = {"money": days[day].money}
-            currDay = {...currDay, ...days[day][this.args[1]]}
+            currDay = {...currDay, ...days[day][spp]}
             for (const attr in currDay) {
                 if (Object.hasOwnProperty.call(currDay, attr)) {
                     const value = currDay[attr];
@@ -264,8 +382,8 @@ td:nth-child(even) > img{
                             }
                         } else {
                             currPlayerStats[attr] += value
-                            if (currPlayerStats[attr] > 100){
-                                currPlayerStats[attr] = 100
+                            if (currPlayerStats[attr] > 10){
+                                currPlayerStats[attr] = 10
                             }
                         }
                     } else {
