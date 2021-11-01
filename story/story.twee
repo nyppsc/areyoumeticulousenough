@@ -109,11 +109,11 @@
     "24": {
         "money": 10,
         "sp": {
-            "happiness": 1,
+            "happiness": 2,
             "ybRelation": 3
         },
         "dsp": {
-            "happiness": -1,
+            "happiness": -2,
             "ybRelation": -2
         }
     },
@@ -177,7 +177,7 @@
             let face;
             face = valueToFaces(attr, value);
             const image = document.createElement("img");
-            image.src = `src/${face}.svg`;
+            image.src = `src/images/${face}.svg`;
             image.style.width = "2em";
             image.style.height = "2em";
             this.output.appendChild(image)
@@ -218,6 +218,7 @@
                     if (currPlayerStats.hasOwnProperty(attr)){
                         if (attr === 'money'){
                             if ((spp === 'sp') || (this.args[2] === 'y')){
+                                $.wiki(`<<audio ":sfx" volume 1 play >>`)
                                 currPlayerStats[attr] -= value
                             }
                         } else {
@@ -258,7 +259,7 @@
     let favicon  = document.createElement("link");
 	favicon.rel  = "icon";
 	favicon.type = "png";
-	favicon.href = "src/favicon.png";
+	favicon.href = "src/images/favicon.png";
 	document.head.appendChild(favicon);
 }());
 
@@ -273,13 +274,142 @@
     })
 }());
 
- 
+// Volume Slider, by Chapel; for SugarCube 2
+// version 1.2.0 (modified by HiEv)
+// For custom CSS for slider use: http://danielstern.ca/range.css/#/
+
+/*
+	Changelog:
+	v1.2.0:
+		- Fixed using/storing the current volume level in the settings.
+	v1.1.0:
+		- Fixed compatibility issues with SugarCube version 2.28 (still
+		  compatible with older versions, too).
+		- Added settings API integration for SugarCube 2.26.
+		- Internal improvements and greater style consistency with my
+		  other work.
+		- Added a pre-minified version.
+		- By default, the slider is now more granular than before
+		  (101 possible positions vs 11). Change the 'current' and
+		  'rangeMax' options to 10 to restore the old feel.
+*/
+
+(function () {
+	// Set initial values.
+	var options = {
+		current  : 50,  // Default volume level.
+		rangeMax : 100,
+		step	 : 1,
+		setting  : true
+	};
+	Setting.load();
+	if (options.setting && settings.volume) {
+		options.current = parseInt(settings.volume);
+	}
+	var vol = {
+		last: options.current,
+		start: (options.current / options.rangeMax).toFixed(2)
+	};
+
+	// Function to update the volume level.
+	function setVolume (val) {
+		if (typeof val !== 'number') val = Number(val);
+		if (Number.isNaN(val) || val < 0) val = 0;
+		if (val > 1) val = 1;
+		options.current = Math.round(val * options.rangeMax);
+		if (options.setting) {
+			settings.volume = options.current;
+			Setting.save();
+		}
+		if ($('input[name=volume]').val() != options.current) {
+			$('input[name=volume]').val(options.current);
+		}
+		try {
+			if (SimpleAudio) {
+				if (typeof SimpleAudio.volume === 'function') {
+					SimpleAudio.volume(val);
+				} else {
+					SimpleAudio.volume = val;
+				}
+				return val;
+			} else {
+				throw new Error('Cannot access audio API.');
+			}
+		} catch (err) {
+			// Fall back to the wikifier if we have to.
+			console.error(err.message, err);
+			$.wiki('<<masteraudio volume ' + val + '>>');
+			return val;
+		}
+	}
+
+	// Fix the initial volume level display.
+	postdisplay['volume-task'] = function (taskName) {
+		delete postdisplay[taskName];
+		setVolume(vol.start);
+	};
+
+	// Grab volume level changes from the volume slider.
+	$(document).on('input', 'input[name=volume]', function() {
+		var change = parseInt($('input[name=volume]').val());
+		setVolume(change / options.rangeMax);
+		vol.last = change;
+	});
+
+	// Create the <<volume>> macro.
+	Macro.add('volume', {
+		handler : function () {
+			var wrapper = $(document.createElement('span'));
+			var slider = $(document.createElement('input'));
+			var className = 'macro-' + this.name;
+			slider.attr({
+				id		: 'volume-control',
+				type	: 'range',
+				name	: 'volume',
+				min		: '0',
+				max		: options.rangeMax,
+				step	: options.step,
+				value	: options.current
+			});
+			// Class '.macro-volume' and ID '#volume-control' for styling the slider
+			wrapper.append(slider).addClass(className).appendTo(this.output);
+		}
+	});
+
+	// Add Setting API integration for SugarCube 2.26 and higher.
+	function updateVolume () {
+		setVolume(settings.volume / options.rangeMax);
+	}
+	if (options.setting) {
+		if (Setting && Setting.addRange && typeof Setting.addRange === 'function') {
+			Setting.addRange('volume', {
+				label : 'Volume: ',
+				min : 0,
+				max : options.rangeMax,
+				step : options.step,
+				default : options.current,
+				onInit : updateVolume,
+				onChange : updateVolume
+			});
+		} else {
+			console.error('This version of SugarCube does not include the `Settings.addRange()` method; please try updating to the latest version of SugarCube.');
+		}
+	}
+}());
+
+:: StoryInit
+<<cacheaudio "chaching" "mp3|src/sound/chaching.mp3">>
+<<createaudiogroup ":sfx">>
+    <<track "chaching">>
+<</createaudiogroup>>
+<<audio ":sfx" volume 0.25>>
+
 :: PassageHeader
-@@#logo; <<link [img[src/logo.svg][Restart]]>><<replace "#logo">><<link [img[src/logo.svg]]>><</link>><</replace>><</link>>@@
+@@#logo; <<link [img[src/images/logo.svg][Restart]]>><<replace "#logo">><<link [img[src/logo.svg]]>><</link>><</replace>><</link>>@@
 
 
 :: CurrPlayerStats
-|Money <img src="src/money.svg" width="60em" height="30em">|$<<print $playerStats.money>>|
+|Money <img src="src/images/money.svg" width="60em" height="30em">|$<<print $playerStats.money>>|
 |Happiness|<<getFace "happiness" $playerStats.happiness>>|
 |Younger Brother Relationship|<<getFace "ybRelation" $playerStats.ybRelation>>|
 |Close Friend Relationship|<<getFace "ybRelation" $playerStats.frRelation>>|
@@ -290,16 +420,24 @@ This is a game where you try to save money and not overspend in a month.
 Each day you will be able to make a decision whether to spend money on that day.
 Your goal in this game is to not overspend.
  
-If you ever need to restart or go fullscreen click on the logo.
+If you ever need to restart, change volume or go fullscreen click on the logo.
 Good Luck!
+ 
+@@#voltest;
+<<volume>>
+<<link "Volume Test">>
+    <<audio ":sfx" volume 1 play>>
+<</link>>
+@@
  
 <<link "Go Fullscreen">>
     <<script>>
     Fullscreen.toggle()
     <</script>>
 <</link>>
-[[Start Game|Introduction]]
- 
+<<link "Start Game" "Introduction">>
+    <<audio ":sfx" volume 1 play>>
+<</link>>
 :: Money Cost
 It will cost you <<cost $day>>.
 <<playerStats>>
@@ -308,7 +446,7 @@ It will cost you <<cost $day>>.
 !The Situation
  
 You are the elder sibling from a low-income family. You have a younger brother and both of you are staying with your parents. With a monthly income of $1,900, excluding the daily necessities expenses, the family is left with $770. You are tasked by your parents to handle distributing the pocket money of $200 for your brother and yourself. You have a month so use the money wisely.
- 
+
 [[START Day 1|Day 1]]
  
 :: Day 1 {"position":"699,302","size":"100,100"}
@@ -348,7 +486,7 @@ Your younger brother felt that you were being selfish and unfair. He decided to 
  
  
 :: Day 4 {"position":"1100,300","size":"100,100"}
-!Day 4 - Your closes friend's birthday
+!Day 4 - Your close friend's birthday
 It is your friend's birthday and you want to share the cost to buy a pair of branded shoes as a birthday gift. You think it is a good opportunity to get closer to him.
 <<set $day = 4>>
 <<include "Money Cost">>
@@ -385,7 +523,7 @@ Your friends had a negative perception of you because of the lack of effort. The
 :: Day 7 {"position":"1500,300","size":"100,100"}
 !Day 7 - Buying an electronic tablet
  
-You finally managed to afford a tablet by using another <<cost $day>> after saving for a year. Everyone in your social circle has it and you feel this pressure to buy. 
+You finally managed to afford a tablet by using another <<cost $day>> after saving for a year. Everyone in your social circle has it and you feel the pressure to buy. 
 <<set $day = 7>>
 <<include "Money Cost">>
  
@@ -430,7 +568,7 @@ Your younger brother wants to change to a new backpack as the one he is using is
 :: D8 Bought {"position":"2100,200","size":"100,100"}
 !Day 8 - Bought the bag
  
-Your younger brother was happy with his new bag.
+Your younger brother was happy with his new bag and kept thanking you for it. 
 <<if $d8Con === true>>You felt bad for not initially not letting your brother buy the bag.<<changePlayerStats $day 'dsp' 'y'>><</if>><<changePlayerStats $day 'sp'>>
  
 [[4 days later...|Day 12]]
@@ -572,7 +710,7 @@ You notice your father is experiencing some back pain due to his job as a blue-c
 <<set $day = 22>>
 <<include "Money Cost">>
  
-[[Show appreciation to your father’s hard work|D22 - Show appreciation to your father’s hard work]]
+[[Show appreciation to your father’s hard work|D22 - Show appreciation for your father’s hard work]]
  
 [[Feign ignorance to your father’s condition|D22 - Feign ignorance to your father’s condition]]
  
@@ -708,6 +846,9 @@ Oops, You overspent!
     <<script>>Fullscreen.toggle()<</script>>
     <<goBack>>
 <</link>>
+ 
+!!Do want to change volume?
+Volume: <<volume>>
  
 !!Do you want to restart?
 You have clicked on the logo.
