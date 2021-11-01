@@ -165,12 +165,12 @@ td:nth-child(even) > img{
  
     State.setVar("$playerStats", {
         "money": 200,
-        "ybRelation": 67,
-        "frRelation": 67,
-        "happiness": 67
+        "ybRelation": 75,
+        "frRelation": 75,
+        "happiness": 75
     })
      
-    const days = {"1":{"money":15,"sp":{"happiness":-15,"ybRelation":20},"dsp":{"happiness":15,"ybRelation":-20}},"4":{"money":30,"sp":{"happiness":20,"frRelation":30},"dsp":{"happiness":-15,"frRelation":-20}},"7":{"money":40,"sp":{"happiness":15},"dsp":{"happiness":-15}},"8":{"money":30,"sp":{"happiness":5,"ybRelation":10},"dsp":{"happiness":-15,"ybRelation":-10}},"12":{"money":40,"sp":{"happiness":10,"ybRelation":10},"dsp":{"happiness":-10,"ybRelation":-10}},"15":{"money":10,"sp":{"happiness":-10,"ybRelation":20},"dsp":{"happiness":15,"ybRelation":-25}},"16":{"money":10,"sp":{"happiness":10,"frRelation":15},"dsp":{"happiness":-10,"frRelation":-15}},"19":{"money":40,"sp":{"happiness":15,"frRelation":10},"dsp":{"happiness":-25,"frRelation":-15}},"22":{"money":11,"sp":{"happiness":15},"dsp":{"happiness":-15}},"24":{"money":10,"sp":{"happiness":5,"ybRelation":25},"dsp":{"happiness":-5,"ybRelation":-10}},"29":{"money":15,"sp":{"happiness":15,"ybRelation":15},"dsp":{"happiness":-25,"frRelation":-15}}};
+    const days = {"1":{"money":15,"sp":{"happiness":-15,"ybRelation":20},"dsp":{"happiness":15,"ybRelation":-20}},"4":{"money":30,"sp":{"happiness":20,"frRelation":30},"dsp":{"happiness":-15,"frRelation":-20}},"7":{"money":40,"sp":{"happiness":15},"dsp":{"happiness":-15}},"8":{"money":30,"sp":{"happiness":10,"ybRelation":15},"dsp":{"happiness":-15,"ybRelation":10}},"12":{"money":40,"sp":{"happiness":10,"ybRelation":10},"dsp":{"happiness":5,"ybRelation":5}},"15":{"money":10,"sp":{"happiness":-10,"ybRelation":20},"dsp":{"happiness":15,"ybRelation":-25}},"16":{"money":10,"sp":{"happiness":5,"ybRelation":15},"dsp":{"happiness":-5,"ybRelation":-15}},"19":{"money":40,"sp":{"happiness":15,"frRelation":10},"dsp":{"happiness":-25,"frRelation":-15}},"22":{"money":11,"sp":{"happiness":15},"dsp":{"happiness":-15}},"24":{"money":10,"sp":{"happiness":5,"ybRelation":25},"dsp":{"happiness":-5,"ybRelation":-10}},"29":{"money":15,"sp":{"happiness":15,"ybRelation":15},"dsp":{"happiness":-25,"frRelation":-15}}};
 
     function createStats(output) {
         new Wikifier(output, `\n<<include "CurrPlayerStats">>`)
@@ -183,10 +183,10 @@ td:nth-child(even) > img{
         } else {
             face = ['sad', 'neutral', 'cool']
         }
-        if (value <= 33){
+        if (value <= 40){
             face = face[0]
         }
-        else if (value <= 66){
+        else if (value <= 60){
             face = face[1]
         }
         else{
@@ -264,8 +264,8 @@ td:nth-child(even) > img{
                             }
                         } else {
                             currPlayerStats[attr] += value
-                            if (currPlayerStats[attr] >= 100){
-                                currPlayerStats[attr] = 99
+                            if (currPlayerStats[attr] > 100){
+                                currPlayerStats[attr] = 100
                             }
                         }
                     } else {
@@ -273,7 +273,6 @@ td:nth-child(even) > img{
                     }
                 }
             }
-            console.log("Day ",day,":",currPlayerStats);
             if (currPlayerStats.money < 0){
                 new Wikifier(this.output, "<<goto Overspent>>")
             }
@@ -317,14 +316,14 @@ td:nth-child(even) > img{
 }());</script><tw-tag name="Start-Game" color="blue"></tw-tag><tw-passagedata pid="1" name="PassageHeader" tags="" position="100,100" size="100,100">@@#logo; &lt;&lt;link [img[src/logo.svg][Restart]]&gt;&gt;&lt;&lt;replace &quot;#logo&quot;&gt;&gt;&lt;&lt;link [img[src/logo.svg]]&gt;&gt;&lt;&lt;/link&gt;&gt;&lt;&lt;/replace&gt;&gt;&lt;&lt;/link&gt;&gt;@@</tw-passagedata><tw-passagedata pid="2" name="CurrPlayerStats" tags="" position="225,100" size="100,100">|Money &lt;img src=&quot;src/money.svg&quot; width=&quot;60em&quot; height=&quot;30em&quot;&gt;|$&lt;&lt;print $playerStats.money&gt;&gt;|
 |Happiness|&lt;&lt;getFace &quot;happiness&quot; $playerStats.happiness&gt;&gt;|
 |Younger Brother Relationship|&lt;&lt;getFace &quot;ybRelation&quot; $playerStats.ybRelation&gt;&gt;|
-|Close Friend Relationship|&lt;&lt;getFace &quot;frRelation&quot; $playerStats.frRelation&gt;&gt;|</tw-passagedata><tw-passagedata pid="3" name="Welcome" tags="Start-Game" position="300,300" size="100,100">----
+|Close Friend Relationship|&lt;&lt;getFace &quot;ybRelation&quot; $playerStats.frRelation&gt;&gt;|</tw-passagedata><tw-passagedata pid="3" name="Welcome" tags="Start-Game" position="300,300" size="100,100">----
 This is a game where you try to save money and not overspend in a month.
 Each day you will be able to make a decision whether to spend money on that day.
 Your goal in this game is to not overspend.
-
+ 
 If you ever need to restart or go fullscreen click on the logo.
 Good Luck!
-
+ 
 &lt;&lt;link &quot;Go Fullscreen&quot;&gt;&gt;
     &lt;&lt;script&gt;&gt;
     Fullscreen.toggle()
@@ -332,28 +331,28 @@ Good Luck!
 &lt;&lt;/link&gt;&gt;
 [[Start Game|Introduction]]</tw-passagedata><tw-passagedata pid="4" name="Money Cost" tags="" position="475,100" size="100,100">It will cost you &lt;&lt;cost $day&gt;&gt;.
 &lt;&lt;playerStats&gt;&gt;</tw-passagedata><tw-passagedata pid="5" name="Introduction" tags="" position="501,299" size="100,100">!The Situation
-
-You are the elder sibling from a low income family. You have a younger brother and both of you are staying with your parents. With a monthly income of $1,900 dollars, excluding the daily necessities expenses, the family is left with $770. You are tasked by your parents to handle distributing the pocket money of $200 for your brother and yourself for a month. Use it wisely.
+ 
+You are the elder sibling from a low-income family. You have a younger brother and both of you are staying with your parents. With a monthly income of $1,900, excluding the daily necessities expenses, the family is left with $770. You are tasked by your parents to handle distributing the pocket money of $200 for your brother and yourself. You have a month so use the money wisely.
  
 [[START Day 1|Day 1]]</tw-passagedata><tw-passagedata pid="6" name="Day 1" tags="" position="699,302" size="100,100">!Day 1 - Your younger brother&#39;s pocket money
  
-Your younger brother has requested pocket money. You know that he packs food from home everyday and does not need to spend money on food in school.
+Your younger brother has requested pocket money. He usually packs food from home every day and does not need to spend money for school.
 &lt;&lt;set $day = 1&gt;&gt;
 &lt;&lt;include &quot;Money Cost&quot;&gt;&gt;
  
 [[Give him pocket money|D1 Give Money]]
-
+ 
 [[Keep money to yourself|D1 Keep Money]]</tw-passagedata><tw-passagedata pid="7" name="D1 Give Money" tags="" position="900,200" size="100,100">!Day 1 - You gave money to your brother
  
 You gave your brother &lt;&lt;cost $day&gt;&gt; because you felt bad for him as he rarely buys food from school.
  
-Your younger brother gave you the largest smile he could give and seemed genuinely happy you gave him pocket money. 
+Your younger brother gave you the largest smile he could give and seemed genuinely happy that you gave him pocket money. 
  
 &lt;&lt;changePlayerStats $day &#39;sp&#39;&gt;&gt;
  
 [[3 days later...|Day 4]]</tw-passagedata><tw-passagedata pid="8" name="D1 Keep Money" tags="" position="900,400" size="100,100">!Day 1 - You kept the money for yourself
  
-You kept the money to yourself for your own spending because you think your brother is acting up.
+You kept the money to yourself for your own spending because you think your brother is just acting up. 
  
 Your younger brother felt that you were being selfish and unfair. He decided to ignore you for the rest of the day.
  
@@ -365,12 +364,12 @@ It is your friend&#39;s birthday and you want to share the cost to buy a pair of
 &lt;&lt;include &quot;Money Cost&quot;&gt;&gt;
  
 [[You paid for your share|D4 Paid]]
-
+ 
 [[You did not care|D4 Unpaid]]</tw-passagedata><tw-passagedata pid="10" name="D4 Paid" tags="" position="1300,200" size="100,100">!Day 4 - You paid for a portion of the shoe
  
-As you didn’t want to feel left out from your group of friends, you chipped in spending money to buy the birthday gift.
+Since you didn’t want to feel left out from your group of friends, you chipped in to buy the birthday gift.
  
-Your friend that received the birthday gift felt happy that you put in the effort to buy it for him. He felt touched by your thoughtfulness. 
+Your friend that received the birthday gift felt happy that you put in the effort to buy it for him. He felt touched by your kind gesture. 
  
 &lt;&lt;changePlayerStats $day &#39;sp&#39;&gt;&gt;
  
@@ -378,7 +377,7 @@ Your friend that received the birthday gift felt happy that you put in the effor
  
 You didn’t care about being seen as a “cheapskate” and came up with an excuse to avoid spending money.
  
-Your friends had a negative image of you because of the lack of effort due to not chipping in for the birthday gift. They felt that you just simply don’t care. 
+Your friends had a negative perception of you because of the lack of effort. They felt that you just simply don’t care. 
  
 &lt;&lt;changePlayerStats $day &#39;dsp&#39;&gt;&gt;
  
@@ -389,10 +388,10 @@ You finally managed to afford a tablet by using another &lt;&lt;cost $day&gt;&gt
 &lt;&lt;include &quot;Money Cost&quot;&gt;&gt;
  
 [[You bought the tablet|D7 Bought tablet]]
-
+ 
 [[You did not buy the tablet|D7 Bought nothing]]</tw-passagedata><tw-passagedata pid="13" name="D7 Bought tablet" tags="" position="1700,200" size="100,100">!Day 7 - You bought an electronic tablet
  
-You have convinced yourself that you NEED an electronic tablet because it will be beneficial for your academics and can also help you to fit in with your friends.
+You have convinced yourself that you NEED an electronic tablet because you feel that it will be beneficial for your academics. Furthermore, it can also help you to fit in with your friends.
  
 Your classmates and friends all were fascinated by your new tablet as it was the latest model. They had the impression that you were well-off financially. 
  
@@ -402,29 +401,28 @@ Your classmates and friends all were fascinated by your new tablet as it was the
  
 You stick with using pen and paper to write down notes just like you have always done. It’s the same to you anyways.
  
-Your friends had the perception that you are too traditional and stuck in olden days. You feel left out when studying with them. 
+You were teased by your friend group. They joked about how you are stuck in the olden days. You feel left out when studying with them. 
  
 &lt;&lt;changePlayerStats $day &#39;dsp&#39;&gt;&gt;
  
 [[The next day|Day 8]]</tw-passagedata><tw-passagedata pid="15" name="Day 8" tags="" position="1900,300" size="100,100">!Day 8 - Buying a new bag for younger brother
  
-Your younger brother wants to change to a new backpack as the one he is using is totally worn out. He wanted to buy the bag from the local bookstore.
-&lt;&lt;set $d8Con = false&gt;&gt;
+Your younger brother wants to change to a new backpack as the one he is using is totally worn out. He wanted to buy the bag from the local bookstore.&lt;&lt;set $day = 8&gt;&gt;
 &lt;&lt;set $day = 8&gt;&gt;
 &lt;&lt;include &quot;Money Cost&quot;&gt;&gt;
  
 [[You bought the bag for your brother|D8 Bought]]
+ 
 [[You decide not to buy the bag for your brother|D8 Didnt Buy]]</tw-passagedata><tw-passagedata pid="16" name="D8 Bought" tags="" position="2100,200" size="100,100">!Day 8 - Bought the bag
  
 Your younger brother was happy with his new bag.
-&lt;&lt;if $d8Con === true&gt;&gt;You felt bad for not initially not letting your brother buy the bag.&lt;&lt;/if&gt;&gt;&lt;&lt;changePlayerStats $day &#39;sp&#39;&gt;&gt;
-
+&lt;&lt;if $d8Con === true&gt;&gt;You felt bad for not initially not letting your brother buy the bag.&lt;&lt;changePlayerStats $day &#39;dsp&#39; &#39;y&#39;&gt;&gt;&lt;&lt;/if&gt;&gt;&lt;&lt;changePlayerStats $day &#39;sp&#39;&gt;&gt;
+ 
 [[4 days later...|Day 12]]</tw-passagedata><tw-passagedata pid="17" name="D8 Didnt Buy" tags="" position="2100,400" size="100,100">!Day 8 - Did not to buy the bag
  
 You &#39;&#39;NEED&#39;&#39; to spend the money for your younger brother because your parents told you that it&#39;s important for him to get a new one as it is no longer usable. 
  
-Your brother felt happy that he had gotten a new bag and looked forward to going to school. 
- 
+Your brother was grinning from ear to ear since he had gotten a new bag. It was evident that his motivation level to go to school has increased. 
 &lt;&lt;set $d8Con = true&gt;&gt;
 [[You reluctantly agreed...|D8 Bought]]</tw-passagedata><tw-passagedata pid="18" name="Day 12" tags="" position="2275,300" size="100,100">!Day 12 - Younger brother&#39;s Birthday
  
@@ -434,21 +432,18 @@ Do you continue with your plan or save your money?
 &lt;&lt;include &quot;Money Cost&quot;&gt;&gt;
  
 [[Continue with the plan|D12 Celebrate Birthday]]
-
+ 
 [[Scrap the plan|D12 Scrap Plan]]</tw-passagedata><tw-passagedata pid="19" name="D12 Celebrate Birthday" tags="" position="2500,400" size="100,100">!Day 12 - Celebrate his birthday
  
 The birthday dinner was a success, it was meaningful for your brother as you do not usually spend money on him.
  
-Your younger brother was touched by your kind gesture and he appreciated it greatly. He was even moved to tears.
+Your younger brother was greatly appreciative of what you have planned for him. He was even moved to tears. 
  
 &lt;&lt;changePlayerStats $day &#39;sp&#39;&gt;&gt;
  
 [[3 days later...|Day 15]]</tw-passagedata><tw-passagedata pid="20" name="D12 Scrap Plan" tags="" position="2500,200" size="100,100">!Day 12 - Scrap the plan
  
-You decide to scrap the plan and simply wish him a happy birthday and hope he felt your sincerity from you.
- 
-Your brother was disappointed in you because he expected at least a gift for his birthday. 
- 
+You decide to scrap the plan and simply wish him a happy birthday. Your brother was disappointed in you because he expected at least a gift.  
 &lt;&lt;changePlayerStats $day &#39;dsp&#39;&gt;&gt;
  
 [[3 days later...|Day 15]]</tw-passagedata><tw-passagedata pid="21" name="Day 15" tags="" position="2701,299" size="100,100">!Day 15 - Brand new card game
@@ -458,26 +453,26 @@ There is a brand new card game in town: &quot;AnimalCollect&quot;, your younger 
 &lt;&lt;include &quot;Money Cost&quot;&gt;&gt;
  
 [[Give in to your brother|D15 - Give In]]
-
-[[Ignore him till he gets tired|D15 - Ignore]]</tw-passagedata><tw-passagedata pid="22" name="D15 - Give In" tags="" position="225,350" size="100,100">!Day 15 - You gave in to your brother
-You gave in to his demands because he keeps pestering you for it and you just wanted it to stop.
  
-Your brother hugged you and said that you are the best brother in the world. He also says that he will share it with you when he buys it. 
+[[Ignore him till he gets tired|D15 - Ignore]]</tw-passagedata><tw-passagedata pid="22" name="D15 - Give In" tags="" position="225,350" size="100,100">!Day 15 - You gave in to your brother
+You gave in to his demands because you just wanted his pestering to stop.
+ 
+Your brother gave you the tightest hug and said that you are the best sibling in the world. He also says that he is excited to play the card game with you when he buys it. 
  
 &lt;&lt;changePlayerStats $day &#39;sp&#39;&gt;&gt;
  
 [[The next day... |Day 16]]</tw-passagedata><tw-passagedata pid="23" name="D15 - Ignore" tags="" position="350,350" size="100,100">!Day 15 - You ignored your younger brother
-You ignore him until he gets tired and gives up, and it has worsened your relationship with him. Your brother said that he hates you and you are the worst person he has ever seen.
+You ignore him until he gets tired and gives up. It has worsened your relationship with him. Frustrated and annoyed, your brother said that he hates you and you are the worst person ever. 
  
 &lt;&lt;changePlayerStats $day &#39;dsp&#39;&gt;&gt;
  
 [[The next day... |Day 16]]</tw-passagedata><tw-passagedata pid="24" name="Day 16" tags="" position="475,350" size="100,100">!Day 16 - Going back to school
-You finally went back to school for lessons after a long time doing HBL and your friends invited you to grab lunch (Coffee: $4 and Sandwich: $6) after school. You didn’t bring any packed food because you already planned to eat together with your friends. You left your brother to eat at home by himself.
+You finally went back to school for lessons after a long time doing HBL and your friends invited you to grab lunch (Coffee: $4 and Sandwich: $6) after school. You didn’t bring any packed food from home because you already planned to eat together with your friends. Your brother ate lunch alone at home. 
 &lt;&lt;set $day = 16&gt;&gt;
 &lt;&lt;include &quot;Money Cost&quot;&gt;&gt;
  
-[[You decide eat with your friends|D16 - Eat]]
-
+[[You decide to eat with your friends|D16 - Eat]]
+ 
 [[You decide to save your money and not eat|D16 - Not eat]]</tw-passagedata><tw-passagedata pid="25" name="D16 - Not eat" tags="" position="600,350" size="100,100">!Day 16 - You need to eat, as you did not pack food
 You &#39;&#39;NEED&#39;&#39; to spend money for food at school because you haven’t eaten anything the whole day and you were starving. 
  
@@ -486,104 +481,105 @@ You feel happy that you are able to eat at school with your friends because you 
 &lt;&lt;changePlayerStats $day &quot;sp&quot;&gt;&gt;
  
 [[3 days later...|Day 19]]</tw-passagedata><tw-passagedata pid="26" name="D16 - Eat" tags="" position="725,350" size="100,100">!Day 16 - You ate and have fun with your friends
-You ate with your friends and had fun talking to your classmates.
+You ate with your friends and had fun spending time with them.  
  
 &lt;&lt;changePlayerStats $day &quot;sp&quot;&gt;&gt;
  
 [[3 days later...|Day 19]]</tw-passagedata><tw-passagedata pid="27" name="Day 19" tags="" position="850,350" size="100,100">!Day 19
-Got laughed at by classmates for wearing the same shirt over and over again. You are thinking of buying some new clothes from a thrift shop.
+You got laughed at by your classmates for continuously wearing the same shirt to school. You are thinking of buying new clothes from a thrift shop. 
 &lt;&lt;set $day = 19&gt;&gt;
 &lt;&lt;include &quot;Money Cost&quot;&gt;&gt;
-
-[[Determined to buy new clothes to impress classmates|D19 - Determined to buy new clothes to impress classmates]]
-
-[[Continue to keep wearing the same old clothes|D19 - Continue to keep wearing the same old clothes]]</tw-passagedata><tw-passagedata pid="28" name="D19 - Determined to buy new clothes to impress classmates" tags="" position="975,350" size="100,100">!Day 19 - Determined to buy new clothes to impress classmates
-You felt embarrassed that you were mocked by your classmates, that you always wear the same shirt and are determined to find new clothes to stop the teasing.
  
-You spent the money and wore them on the following days, your friends complimented you for having good taste. 
+[[Determined to buy new clothes to impress classmates|D19 - Determined to buy new clothes to impress classmates]]
+ 
+[[Continue to keep wearing the same old clothes|D19 - Continue to keep wearing the same old clothes]]</tw-passagedata><tw-passagedata pid="28" name="D19 - Determined to buy new clothes to impress classmates" tags="" position="975,350" size="100,100">!Day 19 - Determined to buy new clothes to impress classmates
+You felt embarrassed that you were mocked by your classmates. You are determined to find new clothes to stop the teasing.
+ 
+You spent the money and wore them to school the next day. Your friends compliment you for having a good sense of style. 
  
 &lt;&lt;changePlayerStats $day &quot;sp&quot;&gt;&gt;
  
 [[3 days later...|Day 22]]</tw-passagedata><tw-passagedata pid="29" name="D19 - Continue to keep wearing the same old clothes" tags="" position="1100,350" size="100,100">!Day 19 - Continue to keep wearing the same old clothes
-You just continue with wearing the same shirt and don’t feel bothered with all the teasing because you don’t find it important to buy new ones when it looks perfectly fine. 
+You continue with wearing the same shirt and don’t feel bothered with all the teasing because you don’t find it important to buy new ones when it looks perfectly fine. 
  
 You still feel slightly embarrassed and unhappy by all their jokes. You keep it by yourself as you do not want to bother anyone with the negative feelings you are experiencing.  
  
 &lt;&lt;changePlayerStats $day &quot;dsp&quot;&gt;&gt;
  
 [[3 days later...|Day 22]]</tw-passagedata><tw-passagedata pid="30" name="Day 22" tags="" position="1225,350" size="100,100">!Day 22
-You notice your father is experiencing some back pain due to his job as a blue collar worker. He hurt his back from carrying heavy objects from working long hours. You feel sympathetic when you see that and want to give him a medical patch.
+You notice your father is experiencing some back pain due to his job as a blue-collar worker. He hurt his back from carrying heavy objects while working long hours. You feel sympathetic towards his condition and want to buy him medical patches. 
  
 &lt;&lt;set $day = 22&gt;&gt;
 &lt;&lt;include &quot;Money Cost&quot;&gt;&gt;
  
 [[Show appreciation to your father’s hard work|D22 - Show appreciation to your father’s hard work]]
-
-[[Feign ignorance to your father’s condition|D22 - Feign ignorance to your father’s condition]]</tw-passagedata><tw-passagedata pid="31" name="D22 - Show appreciation to your father’s hard work" tags="" position="100,475" size="100,100">!Day 22 - Show appreciation to your father’s hard work
-You feel like you want to do something nice for your father to show appreciation for his hard work provide for your family
  
-Your father thanked you for being filial and promised that he will work harder to give you a better life. 
+[[Feign ignorance to your father’s condition|D22 - Feign ignorance to your father’s condition]]</tw-passagedata><tw-passagedata pid="31" name="D22 - Show appreciation for your father’s hard work" tags="" position="100,475" size="100,100">!Day 22 - Show appreciation for your father’s hard work
+You want to do something nice for your father to show appreciation for his hard work in providing for the family. 
+ 
+Your father thanked you for being a filial child and promised that he will work harder to give you a better life. 
  
 &lt;&lt;changePlayerStats $day &quot;sp&quot;&gt;&gt;
  
 [[2 days later...|Day 24]]</tw-passagedata><tw-passagedata pid="32" name="D22 - Feign ignorance to your father’s condition" tags="" position="225,475" size="100,100">!Day 22 - Feign ignorance to your father’s condition
-You turned a blind eye towards your father’s condition and that hope he will heal with time. But you still feel guilty for not doing anything.
+You turned a blind eye towards your father’s condition and hope that he will heal with time. However, you still feel guilty for not doing anything.
  
-Two days later, Your father took medical leave due to unbearable pain over the back. He lies on the bed for the whole day. 
+Two days later, your father took medical leave due to the unbearable back pain. He lies on his bed for the whole day. 
  
 &lt;&lt;changePlayerStats $day &quot;dsp&quot;&gt;&gt;
  
 [[2 days later...|Day 24]]</tw-passagedata><tw-passagedata pid="33" name="Day 24" tags="" position="350,475" size="100,100">!Day 24
-Younger brother requires a calculator because he broke it. You know that you should spend money on your younger brother to buy a calculator because he has a Math test soon and it is very urgent for him to get one. You don’t have a calculator that you can borrow for him to use.
+Younger brother requires a calculator because he broke it. You know that he needs it because he will have a Math test soon. It is very urgent for him to get one. Furthermore, you don’t have a calculator for him to borrow.
 &lt;&lt;set $day = 24&gt;&gt;
 &lt;&lt;include &quot;Money Cost&quot;&gt;&gt;
  
 [[You bought the calculator for him|D24 - You bought the calculator for him]]
-
+ 
 [[You decided not to buy the calculator for him|D24 - You decided not to buy the calculator for him]]</tw-passagedata><tw-passagedata pid="34" name="D24 - You bought the calculator for him" tags="" position="475,475" size="100,100">!Day 24 - You bought the calculator for him
 You know that you should spend money on your younger brother to buy a calculator because he has a Math test soon and it is very urgent for him to get one. You don’t have a calculator that you can borrow for him to use.
  
 &lt;&lt;changePlayerStats $day &quot;sp&quot;&gt;&gt;
  
 [[5 days later...|Day 29]]</tw-passagedata><tw-passagedata pid="35" name="D24 - You decided not to buy the calculator for him" tags="" position="600,475" size="100,100">!Day 24 - You decided not to buy the calculator for him
-Your mother heard about the broken calculator and reprimanded you for your selfishness. You were forced to buy a calculator for him the next day from the school bookshop. At the same time, your brother was hurt from your original decision and became bitter towards you. 
+Your mother heard about the broken calculator and reprimanded you for your selfishness. You were forced to buy a calculator for him the next day from the school bookshop. However, your brother was hurt by your initial decision and became bitter towards you. 
  
 &lt;&lt;changePlayerStats $day &quot;dsp&quot; &quot;y&quot;&gt;&gt;
  
 [[5 days later...|Day 29]]</tw-passagedata><tw-passagedata pid="36" name="Day 29" tags="" position="725,475" size="100,100">!Day 29
-Watching movies with friends, they asked you to bring snacks along. You and your friends have been excited and hyping it to see it for the longest time.
+Watching movies with friends, they asked you to bring snacks along. You and your friends have been excited and have been hyping it up for the longest time.
 &lt;&lt;set $day = 29&gt;&gt;
 &lt;&lt;include &quot;Money Cost&quot;&gt;&gt;
  
 [[Destress from school by hanging out with friends|D29 - Destress from school by hanging out with friends]]
-
+ 
 [[Excuse yourself from joining the movie outing|D29 - Excuse yourself from joining the movie outing]]</tw-passagedata><tw-passagedata pid="37" name="D29 - Destress from school by hanging out with friends" tags="" position="850,475" size="100,100">!Day 29 - Destress from school by hanging out with friends
-You find this as an opportunity destress from huge workload you have from school by spending time with your friends
-You had a good time with your friends and they shared gossips and personal stories with you and you feel like you got closer with them. 
+You find this as an opportunity to destress from the huge workload you have from school. 
+You had a good time with your friends. You feel like you got closer with them. 
  
 &lt;&lt;changePlayerStats $day &quot;sp&quot;&gt;&gt;
  
 [[End|End]]</tw-passagedata><tw-passagedata pid="38" name="D29 - Excuse yourself from joining the movie outing" tags="" position="975,475" size="100,100">!Day 29 - Excuse yourself from joining the movie outing
-You excused yourself from tagging along and told your friends to have fun among themselves because you don’t want to hold them back from watching the movie since they were hyped to watch it.  
-You actually regretted the decision as you saved money for the sake of the family. You felt left out and sad that you were not able to hang out with your friends. 
+You excused yourself from tagging along and told your friends to have fun among themselves. You don’t want to hold them back from watching the movie. 
+ 
+You actually regretted the decision as you were not able to go for the sake of the family. You felt left out and sad that you were not able to hang out with them. 
  
 &lt;&lt;changePlayerStats $day &quot;dsp&quot;&gt;&gt;
  
 [[End|End]]</tw-passagedata><tw-passagedata pid="39" name="End" tags="" position="1100,475" size="100,100">!End
 Congrats! You have made it through the month. But have you considered the relationship with your family members, friends and also your own mental health? 
 Let’s see your progress!
-
+ 
 &lt;&lt;playerEnd&gt;&gt;
-
-[[Retry?|Retry]]</tw-passagedata><tw-passagedata pid="40" name="frighten happiness" tags="" position="1225,475" size="100,100">Your mental health has plummeted and you feel that you have hit rock bottom.</tw-passagedata><tw-passagedata pid="41" name="sad ybRelation" tags="" position="100,600" size="100,100">Sadly, due to money issues, you have drifted apart from your younger brother and the relationship is strained.</tw-passagedata><tw-passagedata pid="42" name="sad frRelation" tags="" position="225,600" size="100,100">Your friends perceived you as not putting in enough effort in maintaining the relationship.</tw-passagedata><tw-passagedata pid="43" name="smile happiness" tags="" position="350,600" size="100,100">You are generally happy throughout the whole month. You managed to live through the way you want it to be.</tw-passagedata><tw-passagedata pid="44" name="cool frRelation" tags="" position="475,600" size="100,100">Your friend appreciates and values you as a super close friend. The relationship has become deeper and it is obvious there is an unbreakable bond and trust.</tw-passagedata><tw-passagedata pid="45" name="cool ybRelation" tags="" position="600,600" size="100,100">You have become significantly close with your brother. Your brother is more open to you.</tw-passagedata><tw-passagedata pid="46" name="neutral happiness" tags="" position="725,600" size="100,100">You did not experience any strong emotion during the month. Sacrifices have been made due to your circumstances but you are fine with it.</tw-passagedata><tw-passagedata pid="47" name="neutral ybRelation" tags="" position="850,600" size="100,100">Your brother is able to understand all decisions made by you. He was unable to get what he wanted but he had no hard feelings towards you.</tw-passagedata><tw-passagedata pid="48" name="neutral frRelation" tags="" position="975,600" size="100,100">Your friends are able to understand your situation. No hard feelings from you but there is no improvement in the relationship either.</tw-passagedata><tw-passagedata pid="49" name="Money left" tags="" position="1100,600" size="100,100">You were left with $&lt;&lt;print $playerStats.money&gt;&gt;.</tw-passagedata><tw-passagedata pid="50" name="Overspent" tags="" position="1225,600" size="100,100">!You Overspent!
+ 
+[[Retry?|Retry]]</tw-passagedata><tw-passagedata pid="40" name="frighten happiness" tags="" position="1225,475" size="100,100">Your mental health has plummeted and you feel that you have hit rock bottom.</tw-passagedata><tw-passagedata pid="41" name="sad ybRelation" tags="" position="100,600" size="100,100">Sadly, due to money issues, you have drifted apart from your younger brother and the relationship has become strained.</tw-passagedata><tw-passagedata pid="42" name="sad frRelation" tags="" position="225,600" size="100,100">Your friends perceived you as not putting in enough effort in maintaining the relationship. They slowly have drifted apart from you.</tw-passagedata><tw-passagedata pid="43" name="smile happiness" tags="" position="350,600" size="100,100">You are generally happy throughout the whole month. You managed to use the money  for your own needs.</tw-passagedata><tw-passagedata pid="44" name="cool frRelation" tags="" position="475,600" size="100,100">Your friend appreciates and values you as a close friend. The relationship has become deeper and it is obvious there is an unbreakable bond.</tw-passagedata><tw-passagedata pid="45" name="cool ybRelation" tags="" position="600,600" size="100,100">You have become significantly close with your brother. Your brother has become more open and affectionate towards you.</tw-passagedata><tw-passagedata pid="46" name="neutral happiness" tags="" position="725,600" size="100,100">You did not experience any strong emotions during the month. Sacrifices have been made due to your circumstances but you are fine with it.</tw-passagedata><tw-passagedata pid="47" name="neutral ybRelation" tags="" position="850,600" size="100,100">Your brother is able to understand the decisions you have made, despite not agreeing with some of them. He was unable to get what he wanted but he has no hard feelings towards you.</tw-passagedata><tw-passagedata pid="48" name="neutral frRelation" tags="" position="975,600" size="100,100">Your friends are able to understand your situation. However, there is no improvement in the relationship.</tw-passagedata><tw-passagedata pid="49" name="Money left" tags="" position="1100,600" size="100,100">You were left with $&lt;&lt;print $playerStats.money&gt;&gt;.</tw-passagedata><tw-passagedata pid="50" name="Overspent" tags="" position="1225,600" size="100,100">!You Overspent!
 Oops, You overspent!
-
+ 
 [[Retry?|Retry]]</tw-passagedata><tw-passagedata pid="51" name="Retry" tags="" position="100,725" size="100,100">&lt;&lt;resetPS&gt;&gt;</tw-passagedata><tw-passagedata pid="52" name="Go back" tags="" position="225,725" size="100,100">&lt;&lt;goBack&gt;&gt;</tw-passagedata><tw-passagedata pid="53" name="Restart" tags="" position="350,725" size="100,100">!!Do you want to go fullscreen?
 &lt;&lt;link &quot;Go Fullscreen&quot;&gt;&gt;
     &lt;&lt;script&gt;&gt;Fullscreen.toggle()&lt;&lt;/script&gt;&gt;
     &lt;&lt;goBack&gt;&gt;
 &lt;&lt;/link&gt;&gt;
-
+ 
 !!Do you want to restart?
 You have clicked on the logo.
 Do you want to restart?
