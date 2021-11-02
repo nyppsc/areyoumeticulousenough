@@ -397,6 +397,29 @@
 	}
 }());
 
+//Do not show Fullscreen Button because it does not work!
+(function () {
+    const isIphone = navigator.userAgent.indexOf("iPhone") != -1 ;
+    const isIpod = navigator.userAgent.indexOf("iPod") != -1 ;
+    const isIpad = navigator.userAgent.indexOf("iPad") != -1 ;
+
+    // now set one variable for all iOS devices
+    const isIOS = isIphone || isIpod || isIpad; 
+    Macro.add('FullscreenBtn', {
+        "handler": function (){
+            if (!isIOS){
+                if (this.args[0] === "goBack"){
+                        new Wikifier(this.output,`!!Do you want to go full screen?\n<<include "FullscreenBtnRS">>`)
+                    } else {
+                        new Wikifier(this.output,`<<include "FullscreenBtn">>`)
+                }
+            } 
+        }
+    })
+}());
+
+
+
 :: StoryInit
 <<cacheaudio "chaching" "mp3|src/sound/chaching.mp3">>
 <<createaudiogroup ":sfx">>
@@ -407,6 +430,17 @@
 :: PassageHeader
 @@#logo; <<link [img[src/images/logo.svg][Restart]]>><<replace "#logo">><<link [img[src/logo.svg]]>><</link>><</replace>><</link>>@@
 
+:: Feedback Form
+!!Did you enjoy the game?
+Please give us your feedback in the form below. Thanks!
+<iframe width="100%" height= "500em" src="https://forms.office.com/Pages/ResponsePage.aspx?id=7bo-JNAAkEan3HWJOw2fmP1H4Igs3TBFlsQrOIBhgeNUMUEwQTdPMzlKU0FOOTcwVjJIUEhDWjRJQi4u&embed=true" frameborder= "0" marginwidth= "0" marginheight= "0" style= "border: none; max-width:100%; max-height:100vh" allowfullscreen webkitallowfullscreen mozallowfullscreen msallowfullscreen> </iframe>
+<a href="https://forms.office.com/r/DSiLzEnyfk" class="link-internals" target="_blank">Link not working?, Click Here.</a>
+
+:: FullscreenBtn
+<<link 'Go Fullscreen'>><<script>>Fullscreen.toggle()<</script>><</link>>
+
+:: FullscreenBtnRS
+<<link 'Go Fullscreen'>><<script>>Fullscreen.toggle()<</script>><<goBack>><</link>>
 
 :: CurrPlayerStats
 |Money <img src="src/images/money.svg" width="60em" height="30em">|$<<print $playerStats.money>>|
@@ -430,11 +464,7 @@ Good Luck!
 <</link>>
 @@
  
-<<link "Go Fullscreen">>
-    <<script>>
-    Fullscreen.toggle()
-    <</script>>
-<</link>>
+<<FullscreenBtn>>
 <<link "Start Game" "Introduction">>
     <<audio ":sfx" volume 1 play>>
 <</link>>
@@ -446,7 +476,6 @@ It will cost you <<cost $day>>.
 !The Situation
  
 You are the elder sibling from a low-income family. You have a younger brother and both of you are staying with your parents. With a monthly income of $1,900, excluding the daily necessities expenses, the family is left with $770. You are tasked by your parents to handle distributing the pocket money of $200 for your brother and yourself. You have a month so use the money wisely.
-
 [[START Day 1|Day 1]]
  
 :: Day 1 {"position":"699,302","size":"100,100"}
@@ -493,7 +522,7 @@ It is your friend's birthday and you want to share the cost to buy a pair of bra
  
 [[You paid for your share|D4 Paid]]
  
-[[You did not care|D4 Unpaid]]
+[[You decided not to pay for your portion of the shoe|D4 Unpaid]]
  
  
 :: D4 Paid {"position":"1300,200","size":"100,100"}
@@ -509,7 +538,7 @@ Your friend that received the birthday gift felt happy that you put in the effor
  
  
 :: D4 Unpaid {"position":"1300,400","size":"100,100"}
-!Day 4 - You did not pay for the portion of the shoe
+!Day 4 - You decided not to pay for the portion of the shoe
  
 You didn’t care about being seen as a “cheapskate” and came up with an excuse to avoid spending money.
  
@@ -577,7 +606,7 @@ Your younger brother was happy with his new bag and kept thanking you for it.
 :: D8 Didnt Buy {"position":"2100,400","size":"100,100"}
 !Day 8 - Did not to buy the bag
  
-You ''NEED'' to spend the money for your younger brother because your parents told you that it's important for him to get a new one as it is no longer usable. 
+You ''NEED'' to spend the money for your younger brother. Your parents reprimanded you how it's important for him to get a new one as the current one was no longer usable. 
  
 Your brother was grinning from ear to ear since he had gotten a new bag. It was evident that his motivation level to go to school has increased. 
 <<set $d8Con = true>>
@@ -656,8 +685,8 @@ You finally went back to school for lessons after a long time doing HBL and your
 [[You decide to save your money and not eat|D16 - Not eat]]
  
 :: D16 - Not eat
-!Day 16 - You need to eat, as you did not pack food
-You ''NEED'' to spend money for food at school because you haven’t eaten anything the whole day and you were starving. 
+!Day 16 - You realised that it was impossible to endure your hunger.
+You ''NEED'' to spend money for food at school because you haven’t eaten anything the whole day and you were starving. Even if the food was costly, you felt that the pain in your wallet was less significant than your hunger. It had been a long time since you ate together with your friends too. 
  
 You feel happy that you are able to eat at school with your friends because you rarely do so. 
  
@@ -796,7 +825,9 @@ Congrats! You have made it through the month. But have you considered the relati
 Let’s see your progress!
  
 <<playerEnd>>
- 
+
+<<include "Feedback Form">>
+
 [[Retry?|Retry]]
  
 :: frighten happiness
@@ -831,7 +862,8 @@ You were left with $<<print $playerStats.money>>.
 :: Overspent
 !You Overspent!
 Oops, You overspent!
- 
+
+<<include "Feedback Form">>
 [[Retry?|Retry]]
  
 :: Retry
@@ -841,11 +873,7 @@ Oops, You overspent!
 <<goBack>>
  
 :: Restart
-!!Do you want to go fullscreen?
-<<link "Go Fullscreen">>
-    <<script>>Fullscreen.toggle()<</script>>
-    <<goBack>>
-<</link>>
+<<FullscreenBtn "goBack">>
  
 !!Do want to change volume?
 Volume: <<volume>>
@@ -860,5 +888,8 @@ Do you want to restart?
         <<set $logoPresses += 1>>
     <</if>>
 <</silently>>
+
 <<link "Yes" "Retry">><</link>>
 <<link "No">><<goBack>><</link>>
+
+<<include "Feedback Form">>
